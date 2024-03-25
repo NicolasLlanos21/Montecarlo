@@ -21,12 +21,12 @@ def generar_ri(semilla,total):
 #FUNCIÓN PARA GENERAR NI CON DISTRIBUCION UNIFORME
 #Intervalo superior (maxI)
 #Intervalo Inferior (minI)
-def generarDistrUniforme(maxIntervalo, minIntervalo, total):
+def generarDistrUniforme(maxIntervalo,minIntervalo,semilla,total):
     global ni
     ni = []   
-    generar_ri(None, total)
-    ni += [round(minIntervalo + (maxIntervalo - minIntervalo) * N, 5) for N in ri]    
-    return ni[0]    
+    generar_ri(semilla,total)
+    ni += [(minIntervalo + (maxIntervalo - minIntervalo) * N) for N in ri]    
+    return ni[0]      
 
 def generarIntDistrUniforme(maxIntervalo, minIntervalo, total):
     global ni
