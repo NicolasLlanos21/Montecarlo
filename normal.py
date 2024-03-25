@@ -30,6 +30,15 @@ def generarDistrNormal(n, media, desviacion_estandar):
     # Calcular la inversa de la distribución normal para cada número pseudoaleatorio y redondear a 5 decimales
     return ni[0]
 
+def generarDistrUniformeConjunto(n, media, desviacion_estandar):
+    global ni
+    ni = []
+    semilla = None
+    generar_ri(semilla, n)
+    ni += [round(norm.ppf(numero, loc=media, scale=desviacion_estandar), 5) for numero in ri]    
+    # Calcular la inversa de la distribución normal para cada número pseudoaleatorio y redondear a 5 decimales
+    return ni[0]
+
 def generarIntDistrNormal(n, media, desviacion_estandar):
     global ni
     ni = []

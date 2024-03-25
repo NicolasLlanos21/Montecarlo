@@ -310,7 +310,7 @@ class Simulacion:
         # Convertir el rango a lista para Plotly para X
         num_partidos = list(range(1, len(arqueros_mas_suerte) + 1))
         # Crear el gráfico de barras
-        fig = go.Figure([go.Bar(x=num_partidos, y=suertes_maximas, text=arqueros_mas_suerte)])
+        fig = go.Figure([go.Bar(x=num_partidos, y=suertes_maximas, text=arqueros_mas_suerte,marker_color='purple')])
 
         # Establecer etiquetas y título
         fig.update_layout(title='Arquero con más suerte por Juego',
@@ -324,7 +324,7 @@ class Simulacion:
             # Convertir el rango a lista para Plotly para X
             num_partidos = list(range(1, len(arqueros_mas_exp) + 1))
             # Crear el gráfico de barras
-            fig = go.Figure([go.Bar(x=num_partidos, y=exp_maximas, text=arqueros_mas_exp)])
+            fig = go.Figure([go.Bar(x=num_partidos, y=exp_maximas, text=arqueros_mas_exp,marker_color='purple')])
 
             # Establecer etiquetas y título
             fig.update_layout(title='Arquero con más experencia por juego',
@@ -334,14 +334,16 @@ class Simulacion:
             # Mostrar el gráfico
             fig.show()
             
-    def graficar_ganadores_genero(self,genero_mas_puntos_por_juego, puntajes_por_genero):
-        juegos = list(range(1, len(genero_mas_puntos_por_juego) + 1))
+    def graficar_ganadores_genero_totales(self, puntajes_por_genero):
+        
         # Graficar Victorias totales por género
         fig = go.Figure(data=[go.Bar(x=list(puntajes_por_genero.keys()), y=list(puntajes_por_genero.values()),
                                     marker_color=['blue', 'pink'])])
         fig.update_layout(title='Victorias totales por género', xaxis_title='Género', yaxis_title='Puntaje total')
         fig.show()
 
+    def graficar_ganadores_genero_juego(self,genero_mas_puntos_por_juego):
+        juegos = list(range(1, len(genero_mas_puntos_por_juego) + 1))
         # Graficar Victorias de cada genero por juego
         fig = go.Figure()
         # Agregar barras para los puntajes por juego
@@ -370,15 +372,16 @@ equipo1 = Equipo("Equipo 1")
 equipo2 = Equipo("Equipo 2")
 
 # Agregar arqueros a los equipos
+psal = uniforme.generarDistrUniformeConjunto(1, 0, 10)
+generos = ["Femenino", "Masculino"]
 for i in range(5):
-    generos = ["Femenino", "Masculino"]
-    genero_arquero1 = uniforme.generarDistrUniforme(1, 0, 1)
-    genero_elegido_arquero1 = generos[0] if genero_arquero1 < 0.5 else generos[1]
-    genero_arquero2 = uniforme.generarDistrUniforme(1, 0, 1)
-    genero_elegido_arquero2 = generos[0] if genero_arquero1 < 0.5 else generos[1]
+    genero_elegido_arquero1 = generos[0] if psal[i-1] < 0.5 else generos[1]
     arquero1 = Arquero(genero_elegido_arquero1, "Arquero 1-" + str(i+1),normal.generarIntDistrNormal(1,35,10))
-    arquero2 = Arquero(genero_elegido_arquero2, "Arquero 2-" + str(i+1),normal.generarIntDistrNormal(1,35,10))
     equipo1.agregar_arquero(arquero1)
+
+for i in range(5):
+    genero_elegido_arquero2 = generos[0] if psal[i+4] < 0.5 else generos[1]
+    arquero2 = Arquero(genero_elegido_arquero2, "Arquero 2-" + str(i+1),normal.generarIntDistrNormal(1,35,10))
     equipo2.agregar_arquero(arquero2)
 
 # Crear simulación
@@ -422,7 +425,8 @@ simulacion.graficar_exp_juego(arqueros_mas_exp,exp_maximas)
 
 #genero con mas Victorias
 genero_mas_puntos_por_juego, puntajes_por_genero = simulacion.obtener_genero_mas_puntos_juego(resultados_simulacion)
-simulacion.graficar_ganadores_genero(genero_mas_puntos_por_juego, puntajes_por_genero)
+simulacion.graficar_ganadores_genero_totales(puntajes_por_genero)
+simulacion.graficar_ganadores_genero_juego(genero_mas_puntos_por_juego)
 
 #Obtener el puntaje total de cada jugador en cada juego
 puntaje_jugadores =  simulacion.obtener_puntos_jugadores(resultados_simulacion)

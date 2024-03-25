@@ -28,6 +28,13 @@ def generarDistrUniforme(maxIntervalo,minIntervalo,total):
     ni += [(minIntervalo + (maxIntervalo - minIntervalo) * N) for N in ri]    
     return ni[0]      
 
+def generarDistrUniformeConjunto(maxIntervalo,minIntervalo,total):
+    global ni
+    ni = []   
+    generar_ri(None,total)
+    ni += [(minIntervalo + (maxIntervalo - minIntervalo) * N) for N in ri]    
+    return ni 
+
 def generarIntDistrUniforme(maxIntervalo, minIntervalo, total):
     global ni
     ni = []   
